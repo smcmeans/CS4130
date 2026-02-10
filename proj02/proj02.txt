@@ -1,0 +1,20 @@
+#
+# cs4130
+# Project 02
+# Sean McMeans
+# w1566sxm
+# Due 29 Jan 2026, accepted  up to 10pm Jan 30
+# System = fry
+# Compiler syntax  = NA
+# Job Control File = proj02.sbatch
+# Additional File  = helper.sh
+# Results file     = proj02.txt
+#
+058 063 014
+031 084 008
+064 128 100
+001 001 001
+055 009 087
+040 029 116
+041 074 122
+job took 9614 seconds to run

@@ -1,0 +1,12 @@
+proj01.sh 1 2 3 4 5 6
+Sum: 21      Average: 3.50
+Max: 6      Min: 1
+
+proj01.sh 4 8 291 02 48
+Sum: 353      Average: 70.60
+Max: 291      Min: 2
+
+proj01.sh 1 2 3 4
+Sum: 10      Average: 2.50
+Max: 4      Min: 1
+

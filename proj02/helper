@@ -1,0 +1,35 @@
+
+output_file="proj02.txt"
+
+# Output the header
+(
+	echo "#"
+	echo "# cs4130"
+	echo "# Project 02"
+	echo "# Sean McMeans"
+	echo "# w1566sxm"
+	echo "# Due 29 Jan 2026, accepted  up to 10pm Jan 30"
+	echo "# System = fry"
+	echo "# Compiler syntax  = NA"
+	echo "# Job Control File = proj02.sbatch"
+	echo "# Additional File  = helper.sh"
+	echo "# Results file     = $output_file"
+	echo "#"
+) > $output_file
+
+start_time=$(date +%s)
+
+# Run the decrypt sbatch
+sbatch --wait proj02.sbatch
+
+end_time=$(date +%s)
+
+# Add output from sbatch files to the output files
+cat *.tmp >> $output_file
+# Remove temp files (Don't do this outside of this directory)
+rm *.tmp
+
+# Get elapsed time
+elapsed=$(echo "$end_time - $start_time" | bc)
+# Add time to output file
+echo "job took $elapsed seconds to run" >> $output_file
