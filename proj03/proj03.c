@@ -115,7 +115,7 @@ int main (int argc, char *argv[]){
       double pi_estimate = (pi_estimate_M + pi_estimate_P) / 2.0; // Average of the two estimates
 
       // Check if the estimate has converged
-      if (prev_pi_estimate != 0.0 && fabs(pi_estimate - prev_pi_estimate) < 1e-6) {
+      if (prev_pi_estimate != 0.0 && fabs(pi_estimate - prev_pi_estimate) < 1e-12) {
         converged = 1;
       } else {
         prev_pi_estimate = pi_estimate;
@@ -124,15 +124,22 @@ int main (int argc, char *argv[]){
     }
     // Broadcast convergence status to all processes
     MPI_Bcast(&converged, 1, MPI_SHORT, 0, MPI_COMM_WORLD);
+
+    // Print results after to make a graph of convergence
+    if (rank == 0) {
+      printf("M=%llu P=%llu\n",totalMnP[0],totalMnP[1]);
+      printf("use(pi=4M/N) pi~%f\n",4.0*totalMnP[0]/(N*world_size));
+      printf("use(pi=2M/P) pi~%f\n",2.0*totalMnP[0]/totalMnP[1]);
+    }
   }
 
   
   // Results
-  if (rank == 0) {
-    printf("M=%llu P=%llu\n",totalMnP[0],totalMnP[1]);
-    printf("use(pi=4M/N) pi~%f\n",4.0*totalMnP[0]/(N*world_size));
-    printf("use(pi=2M/P) pi~%f\n",2.0*totalMnP[0]/totalMnP[1]);
-  }
+  // if (rank == 0) {
+  //   printf("M=%llu P=%llu\n",totalMnP[0],totalMnP[1]);
+  //   printf("use(pi=4M/N) pi~%f\n",4.0*totalMnP[0]/(N*world_size));
+  //   printf("use(pi=2M/P) pi~%f\n",2.0*totalMnP[0]/totalMnP[1]);
+  // }
 
   MPI_Barrier(MPI_COMM_WORLD);
   MPI_Finalize();
