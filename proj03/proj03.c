@@ -137,19 +137,17 @@ int main (int argc, char *argv[]){
 
     // Print results after to make a graph of convergence
     if (rank == 0) {
-      printf("M=%llu P=%llu\n",totalMnP[0],totalMnP[1]);
-      printf("use(pi=4M/N) pi~%f\n",4.0*totalMnP[0]/(double)(current_n * world_size));
-      printf("use(pi=2M/P) pi~%f\n",2.0*totalMnP[0]/totalMnP[1]);
+      printf("%f\n", prev_pi_estimate);
     }
   }
 
   
   // Results
-  // if (rank == 0) {
-  //   printf("M=%llu P=%llu\n",totalMnP[0],totalMnP[1]);
-  //   printf("use(pi=4M/N) pi~%f\n",4.0*totalMnP[0]/(N*world_size));
-  //   printf("use(pi=2M/P) pi~%f\n",2.0*totalMnP[0]/totalMnP[1]);
-  // }
+  if (rank == 0) {
+    printf("M=%llu P=%llu\n",totalMnP[0],totalMnP[1]);
+    printf("use(pi=4M/N) pi~%f\n",4.0*totalMnP[0]/(N*world_size));
+    printf("use(pi=2M/P) pi~%f\n",2.0*totalMnP[0]/totalMnP[1]);
+  }
 
   MPI_Barrier(MPI_COMM_WORLD);
   MPI_Finalize();
