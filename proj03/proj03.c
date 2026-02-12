@@ -115,7 +115,7 @@ int main (int argc, char *argv[]){
       double pi_estimate = (pi_estimate_M + pi_estimate_P) / 2.0; // Average of the two estimates
 
       // Check if the estimate has converged
-      if (prev_pi_estimate != 0.0 && fabs(pi_estimate - prev_pi_estimate) < 1e-3) {
+      if (prev_pi_estimate != 0.0 && fabs(pi_estimate - prev_pi_estimate) < 1e-6) {
         converged = 1;
       } else {
         prev_pi_estimate = pi_estimate;
