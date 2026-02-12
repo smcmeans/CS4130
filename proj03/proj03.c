@@ -136,16 +136,16 @@ int main (int argc, char *argv[]){
     MPI_Bcast(&converged, 1, MPI_SHORT, 0, MPI_COMM_WORLD);
 
     // Print results after to make a graph of convergence
-    if (rank == 0) {
-      printf("%f\n", prev_pi_estimate);
-    }
+    // if (rank == 0) {
+    //   printf("%f\n", prev_pi_estimate);
+    // }
   }
 
   
   // Results
   if (rank == 0) {
     printf("M=%llu P=%llu\n",totalMnP[0],totalMnP[1]);
-    printf("use(pi=4M/N) pi~%f\n",4.0*totalMnP[0]/(N*world_size));
+    printf("use(pi=4M/N) pi~%f\n",4.0*totalMnP[0]/(current_n*world_size));
     printf("use(pi=2M/P) pi~%f\n",2.0*totalMnP[0]/totalMnP[1]);
   }
 
