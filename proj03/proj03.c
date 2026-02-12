@@ -104,6 +104,11 @@ int main (int argc, char *argv[]){
   short converged = 0;
   double prev_pi_estimate = 0.0;
   long current_n = 0;
+
+  time_t start_time;
+  if (rank == 0) {
+    time(&start_time);
+  }
   while (converged == 0) {
     MnP=calMandP(N);
 
@@ -144,9 +149,15 @@ int main (int argc, char *argv[]){
   
   // Results
   if (rank == 0) {
+    time_t end_time;
+    time(&end_time);
+    double elapsed_time = difftime(end_time, start_time);
+
     printf("M=%llu P=%llu\n",totalMnP[0],totalMnP[1]);
     printf("use(pi=4M/N) pi~%f\n",4.0*totalMnP[0]/(current_n*world_size));
     printf("use(pi=2M/P) pi~%f\n",2.0*totalMnP[0]/totalMnP[1]);
+    
+    printf("Elapsed time: %.2f seconds\n", elapsed_time);
   }
 
   MPI_Barrier(MPI_COMM_WORLD);
