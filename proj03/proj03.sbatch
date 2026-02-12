@@ -3,7 +3,7 @@
 #SBATCH --tasks-per-node=4
 #SBATCH --job-name=proj03
 #SBATCH --output=proj03.txt
-#SBATCH --time=00:30:00
+#SBATCH --time=01:30:00
 
 ## First make sure all other modules are not loaded
 module purge
