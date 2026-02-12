@@ -135,7 +135,6 @@ int main (int argc, char *argv[]){
       } else {
         prev_pi_estimate = pi_estimate;
       }
-      
     }
     // Broadcast convergence status to all processes
     MPI_Bcast(&converged, 1, MPI_SHORT, 0, MPI_COMM_WORLD);
@@ -156,6 +155,7 @@ int main (int argc, char *argv[]){
     printf("M=%llu P=%llu\n",totalMnP[0],totalMnP[1]);
     printf("use(pi=4M/N) pi~%f\n",4.0*totalMnP[0]/(current_n*world_size));
     printf("use(pi=2M/P) pi~%f\n",2.0*totalMnP[0]/totalMnP[1]);
+    printf("iterations=%lu\n",current_n/N);
     
     printf("Elapsed time: %.2f seconds\n", elapsed_time);
   }
