@@ -103,6 +103,7 @@ int main (int argc, char *argv[]){
   unsigned long totalMnP[2];
   short converged = 0;
   double prev_pi_estimate = 0.0;
+  long current_n = 0;
   while (converged == 0) {
     MnP=calMandP(N);
 
@@ -111,12 +112,15 @@ int main (int argc, char *argv[]){
 
     // Check for convergence
     if (rank == 0) {
+      // Update current_n
+      current_n += N;
+
       // Update total M and P
       totalMnP[0] += runTotalMnP[0]; // Total M
       totalMnP[1] += runTotalMnP[1]; // Total P
 
       // Calculate pi estimates
-      double pi_estimate_M = 4.0 * (totalMnP[0] / N); // 4 * (M / N)
+      double pi_estimate_M = 4.0 * (totalMnP[0] /(double)(current_n * world_size)); // 4 * (M / N)
       double pi_estimate_P = 2.0 * (totalMnP[0] / (double)totalMnP[1]); // 2 * (M / P)
       double pi_estimate = (pi_estimate_M + pi_estimate_P) / 2.0; // Average of the two estimates
 
@@ -134,7 +138,7 @@ int main (int argc, char *argv[]){
     // Print results after to make a graph of convergence
     if (rank == 0) {
       printf("M=%llu P=%llu\n",totalMnP[0],totalMnP[1]);
-      printf("use(pi=4M/N) pi~%f\n",4.0*totalMnP[0]/N);
+      printf("use(pi=4M/N) pi~%f\n",4.0*totalMnP[0]/(double)(current_n * world_size));
       printf("use(pi=2M/P) pi~%f\n",2.0*totalMnP[0]/totalMnP[1]);
     }
   }
