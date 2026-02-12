@@ -1,0 +1,75 @@
+
+Epsilon = 10^-9
+
+	N=10
+	M=11923567 P=6387514 total_N=3019190
+	use(pi=4M/N) pi~3.949260
+	use(pi=2M/P) pi~3.733398
+	iterations=301919
+	Elapsed time: 2.00 seconds
+
+	N=100
+	M=36949732 P=22650630 total_N=10708200
+	use(pi=4M/N) pi~3.450602
+	use(pi=2M/P) pi~3.262579
+	iterations=107082
+	Elapsed time: 2.00 seconds
+
+	N=1000
+	M=151847868 P=97320531 total_N=46008000
+	use(pi=4M/N) pi~3.300467
+	use(pi=2M/P) pi~3.120572
+	iterations=46008
+	Elapsed time: 5.00 seconds
+
+	N=10000
+	M=662561193 P=429235283 total_N=202910000
+	use(pi=4M/N) pi~3.265296
+	use(pi=2M/P) pi~3.087170
+	iterations=20291
+	Elapsed time: 17.00 seconds
+
+	N=100000
+	M=2261380561 P=1468324128 N=694100000
+	use(pi=4M/N) pi~3.258004
+	use(pi=2M/P) pi~3.080220
+	iterations=6941
+	Elapsed time: 51.00 seconds
+
+
+Epsilon = 10^-12
+	N=100000
+	M=17582630432 P=11425529468 N=5401100000
+	use(pi=4M/N) pi~3.255380
+	use(pi=2M/P) pi~3.077780
+	iterations=54011
+	Elapsed time: 368 seconds
+
+Epsilon = 10^-3
+	N=100000
+	M=48315210 P=30041335
+	use(pi=4M/N) pi~3.402480
+	use(pi=2M/P) pi~3.216582
+	Elapsed time: 1.00 seconds
+
+Epsilon = 10^-6
+	N=100000
+	M=835067067 P=541331296
+	use(pi=4M/N) pi~3.263255
+	use(pi=2M/P) pi~3.085235
+	Elapsed time: 17.00 seconds
+
+Epsilon = 10^-9
+	N=100000
+	M=1690466471 P=1097273964
+	use(pi=4M/N) pi~3.259045
+	use(pi=2M/P) pi~3.081211
+	Elapsed time: 36.00 seconds
+
+Epsilon = 10^-12
+	N=100000
+	M=17582630432 P=11425529468 total_N=5401100000
+	use(pi=4M/N) pi~3.255380
+	use(pi=2M/P) pi~3.077780
+	iterations=54011
+	Elapsed time: 368.00 seconds
