@@ -152,7 +152,7 @@ int main (int argc, char *argv[]){
     time(&end_time);
     double elapsed_time = difftime(end_time, start_time);
 
-    printf("M=%llu P=%llu\n",totalMnP[0],totalMnP[1]);
+    printf("M=%llu P=%llu N=%lu\n",totalMnP[0],totalMnP[1],current_n);
     printf("use(pi=4M/N) pi~%f\n",4.0*totalMnP[0]/(current_n*world_size));
     printf("use(pi=2M/P) pi~%f\n",2.0*totalMnP[0]/totalMnP[1]);
     printf("iterations=%lu\n",current_n/N);
