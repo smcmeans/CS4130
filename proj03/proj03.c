@@ -3,7 +3,7 @@
 // Project 03
 // Sean McMeans
 // w1566sxm
-// Due 08 Feb 2024, accepted up to Feb 09 10pm
+// Due 12 Feb 2026, accepted up to Feb 13 10pm
 // System = fry
 // Compiler syntax = ./compile.sh proj03
 // Job Control File = proj03.sbatch
@@ -85,8 +85,11 @@ int main (int argc, char *argv[]){
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
+  int world_size;
+  MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+
   // Use current time as seed for random generator 
-  srand(time(0) + rank); // Add rank to seed to ensure different seeds for each process
+  srand(time(0) * rank); // Multiply by rank to ensure different seeds for each process
   
   // For convenience I passed "N" on the command line
   // Not checking for valid input
@@ -95,41 +98,31 @@ int main (int argc, char *argv[]){
   
   // The Max value of unsigned long is 18,446,744,073,709,551,615
   unsigned long* MnP;   // Store in vector M=MnP[0] and P=MnP[1]
-  unsigned long totalM = 0;
-  unsigned long totalP = 0;
+  unsigned long totalMnP[2];
   short converged = 0;
   double prev_pi_estimate = 0.0;
   while (converged == 0) {
     MnP=calMandP(N);
-    // Communicate M and P to rank 0 and calculate totals
+
+    // Sum M and P across all processes
+    MPI_Reduce(MnP, totalMnP, 2, MPI_UNSIGNED_LONG, MPI_SUM, 0, MPI_COMM_WORLD);
+
+    // Check for convergence
     if (rank == 0) {
-      totalM = MnP[0];
-      totalP = MnP[1];
-      int size;
-      MPI_Comm_size(MPI_COMM_WORLD, &size);
-      for (int i = 1; i < size; ++i) {
-        unsigned long recvMnP[2];
-        MPI_Recv(&recvMnP[0], 2, MPI_UNSIGNED_LONG, i, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-        totalM += recvMnP[0];
-        totalP += recvMnP[1];
-      }
-      // Check for convergence by comparing the current estimate of pi with the previous estimate
-      double pi_estimate = 4.0 * totalM / N;
+      double pi_estimate_M = 4.0 * (totalMnP[0] / (double)(N * world_size)); // 4 * (M / N)
+      double pi_estimate_P = 2.0 * (totalMnP[0] / (double)totalMnP[1]); // 2 * (M / P)
+      double pi_estimate = (pi_estimate_M + pi_estimate_P) / 2.0; // Average of the two estimates
+
+      // Check if the estimate has converged
       if (prev_pi_estimate != 0.0 && fabs(pi_estimate - prev_pi_estimate) < 1e-3) {
         converged = 1;
-        
-        
       } else {
         prev_pi_estimate = pi_estimate;
       }
-      // Broadcast convergence status to all processes
-      MPI_Bcast(&converged, 1, MPI_SHORT, 0, MPI_COMM_WORLD);
-
-    } else {
-      MPI_Send(&MnP, 2, MPI_UNSIGNED_LONG, 0, 0, MPI_COMM_WORLD);
-      // Receive convergence status from rank 0
-      MPI_Bcast(&converged, 1, MPI_SHORT, 0, MPI_COMM_WORLD);
+      
     }
+    // Broadcast convergence status to all processes
+    MPI_Bcast(&converged, 1, MPI_SHORT, 0, MPI_COMM_WORLD);
   }
 
   
@@ -140,6 +133,10 @@ int main (int argc, char *argv[]){
     printf("use(pi=2M/P) pi~%f\n",2.0*totalM/totalP);
   }
   
+
+  MPI_Barrier(MPI_COMM_WORLD);
+  MPI_Finalize();
+
   return 0;
 }
 
