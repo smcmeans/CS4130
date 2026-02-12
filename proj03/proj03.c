@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 
 //#define DEBUG
 
@@ -128,11 +129,10 @@ int main (int argc, char *argv[]){
   
   // Results
   if (rank == 0) {
-    printf("M=%llu P=%llu\n",totalM,totalP);
-    printf("use(pi=4M/N) pi~%f\n",4.0*totalM/N);
-    printf("use(pi=2M/P) pi~%f\n",2.0*totalM/totalP);
+    printf("M=%llu P=%llu\n",totalMnP[0],totalMnP[1]);
+    printf("use(pi=4M/N) pi~%f\n",4.0*totalMnP[0]/(N*world_size));
+    printf("use(pi=2M/P) pi~%f\n",2.0*totalMnP[0]/totalMnP[1]);
   }
-  
 
   MPI_Barrier(MPI_COMM_WORLD);
   MPI_Finalize();
