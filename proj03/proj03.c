@@ -99,6 +99,7 @@ int main (int argc, char *argv[]){
   
   // The Max value of unsigned long is 18,446,744,073,709,551,615
   unsigned long* MnP;   // Store in vector M=MnP[0] and P=MnP[1]
+  unsigned long runTotalMnP[2]; // M and P total for each run
   unsigned long totalMnP[2];
   short converged = 0;
   double prev_pi_estimate = 0.0;
@@ -106,10 +107,15 @@ int main (int argc, char *argv[]){
     MnP=calMandP(N);
 
     // Sum M and P across all processes
-    MPI_Reduce(MnP, totalMnP, 2, MPI_UNSIGNED_LONG, MPI_SUM, 0, MPI_COMM_WORLD);
+    MPI_Reduce(MnP, runTotalMnP, 2, MPI_UNSIGNED_LONG, MPI_SUM, 0, MPI_COMM_WORLD);
 
     // Check for convergence
     if (rank == 0) {
+      // Update total M and P
+      totalMnP[0] += runTotalMnP[0]; // Total M
+      totalMnP[1] += runTotalMnP[1]; // Total P
+
+      // Calculate pi estimates
       double pi_estimate_M = 4.0 * (totalMnP[0] / (double)(N * world_size)); // 4 * (M / N)
       double pi_estimate_P = 2.0 * (totalMnP[0] / (double)totalMnP[1]); // 2 * (M / P)
       double pi_estimate = (pi_estimate_M + pi_estimate_P) / 2.0; // Average of the two estimates
